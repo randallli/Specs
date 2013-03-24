@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         =  'ARAnalytics'
-  s.version      =  '1.2.1'
+  s.version      =  '1.2'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.summary      =  'Use multiple major analytics platforms with one clean simple API.'
   s.homepage     =  'http://github.com/orta/ARAnalytics'
   s.author       =  { 'orta' => 'orta.therox@gmail.com' }
-  s.source       =  { :git => 'https://github.com/randallli/ARAnalytics.git' , :tag => "1.2.1"}
+  s.source       =  { :git => 'https://github.com/orta/ARAnalytics.git' , :tag => "1.2"}
   s.description  =  'Using subspecs you can define your analytics provider with the same API.'
   s.platform     =  :ios
 
@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
 
       # Each subspec adds a compiler flag saying that the spec was included
       ss.prefix_header_contents = "#define AR_#{analytics_spec[:spec_name].upcase}_EXISTS 1"
-      ss.source_files = ["Providers/#{analytics_spec[:spec_name]}Provider.{h,m}", "Extensions/ARAnalytics+#{analytics_spec[:spec_name]}.{h/m}"]
+      ss.source_files = ["Providers/#{analytics_spec[:spec_name]}Provider.{h,m}"]
 
       # If there's a podspec dependency include it
       if analytics_spec[:dependency] 
