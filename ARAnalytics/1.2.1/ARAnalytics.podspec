@@ -2,29 +2,29 @@ Pod::Spec.new do |s|
   s.name         =  'ARAnalytics'
   s.version      =  '1.2.1'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
-  s.summary      =  'Use multiple major analytics platforms with one clean simple API.'
+  s.summary      =  'Use mutliple major analytics platforms with one clean API.'
   s.homepage     =  'http://github.com/orta/ARAnalytics'
-  s.author       =  { 'orta' => 'orta.therox@gmail.com' }
-  s.source       =  { :git => 'https://github.com/randallli/ARAnalytics.git' , :tag => "1.2.1"}
+  s.authors      =  { 'orta' => 'orta.therox@gmail.com' }
+  s.source       =  { :git => 'https://github.com/orta/ARAnalytics.git' }
   s.description  =  'Using subspecs you can define your analytics provider with the same API.'
   s.platform     =  :ios
 
-  testflight_sdk = { :spec_name => "TestFlight",       :dependency => "TestFlightSDK",            :import_file => "TestFlight" }
-  mixpanel       = { :spec_name => "Mixpanel",         :dependency => "Mixpanel",                 :import_file => "Mixpanel" }
-  localytics     = { :spec_name => "Localytics",       :dependency => "Localytics",               :import_file => "LocalyticsSession" }
-  flurry         = { :spec_name => "Flurry",           :dependency => "FlurrySDK",                :import_file => "Flurry" }
-  google         = { :spec_name => "GoogleAnalytics",  :dependency => "GoogleAnalytics-iOS-SDK",  :import_file => "GAI" }
-  kissmetrics    = { :spec_name => "KISSmetrics",      :dependency => "KISSmetrics",              :import_file => "KISSMetricsAPI" }
-  crittercism    = { :spec_name => "Crittercism",      :dependency => "CrittercismSDK",           :import_file => "Crittercism" }
-  countly        = { :spec_name => "Countly",          :dependency => "Countly",                  :import_file => "Countly" }
-  bugsnag        = { :spec_name => "Bugsnag",          :dependency => "Bugsnag",                  :import_file => "Bugsnag" }
+  testflight_sdk = { :spec_name => "TestFlight",       :dependency => "TestFlightSDK",            :import_file => "TestFlight",         :has_extension => false  }
+  mixpanel       = { :spec_name => "Mixpanel",         :dependency => "Mixpanel",                 :import_file => "Mixpanel",           :has_extension => false  }
+  localytics     = { :spec_name => "Localytics",       :dependency => "Localytics",               :import_file => "LocalyticsSession",  :has_extension => false  }
+  flurry         = { :spec_name => "Flurry",           :dependency => "FlurrySDK",                :import_file => "Flurry",             :has_extension => false  }
+  google         = { :spec_name => "GoogleAnalytics",  :dependency => "GoogleAnalytics-iOS-SDK",  :import_file => "GAI",                :has_extension => true   }
+  kissmetrics    = { :spec_name => "KISSmetrics",      :dependency => "KISSmetrics",              :import_file => "KISSMetricsAPI",     :has_extension => false  }
+  crittercism    = { :spec_name => "Crittercism",      :dependency => "CrittercismSDK",           :import_file => "Crittercism",        :has_extension => false  }
+  countly        = { :spec_name => "Countly",          :dependency => "Countly",                  :import_file => "Countly",            :has_extension => false  }
+  bugsnag        = { :spec_name => "Bugsnag",          :dependency => "Bugsnag",                  :import_file => "Bugsnag",            :has_extension => false  }
   crashlytics    = { :spec_name => "Crashlytics" }
 
   $all_analytics = [testflight_sdk, mixpanel, localytics, flurry, google, kissmetrics, crittercism, crashlytics, bugsnag, countly]
 
   # bring in all files via the core package
   s.subspec "Core" do |ss|
-    ss.source_files =  ['*.{h,m}', 'Providers/ARAnalyticalProvider.{h,m}', 'Providers/ARAnalyticsProviders.h' ,]
+    ss.source_files =  ['*.{h,m}', 'Providers/ARAnalyticalProvider.{h,m}', 'Providers/ARAnalyticsProviders.h']
   end
   
   # make specs for each analytics
@@ -36,7 +36,14 @@ Pod::Spec.new do |s|
 
       # Each subspec adds a compiler flag saying that the spec was included
       ss.prefix_header_contents = "#define AR_#{analytics_spec[:spec_name].upcase}_EXISTS 1"
-      ss.source_files = ["Providers/#{analytics_spec[:spec_name]}Provider.{h,m}", "Extensions/ARAnalytics+#{analytics_spec[:spec_name]}.{h/m}"]
+      sources = ["Providers/#{analytics_spec[:spec_name]}Provider.{h,m}"]
+
+      # It there's a category adding extra class methods to ARAnalytics
+      if analytics_spec[:has_extension]
+        sources << "Extensions/ARAnalytics+#{analytics_spec[:spec_name]}.{h,m}"
+      end
+      
+      ss.source_files = sources
 
       # If there's a podspec dependency include it
       if analytics_spec[:dependency] 
