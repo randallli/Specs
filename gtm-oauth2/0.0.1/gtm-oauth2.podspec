@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.source       = { :svn => 'http://gtm-oauth2.googlecode.com/svn/trunk/', :revision => 'r107' }
   s.requires_arc = false
   s.dependency   'GTMHTTPFetcher'
+  s.dependency    'SBJson'
   s.frameworks = 'Security', 'SystemConfiguration'
   s.ios.deployment_target = '3.0'
   s.osx.deployment_target = '10.5'
@@ -29,7 +30,7 @@ Pod::Spec.new do |s|
   end
 
   s.license = {
-    :type => 'Apache License 2.0',
+    :type => 'Apache License, Version 2.0',
     :text => <<-LICENSE
       Copyright (c) 2010 Google Inc.
 

@@ -14,16 +14,16 @@ Pod::Spec.new do |s|
   s.platform = :ios
   s.ios.deployment_target = '5.1'
 
-  framework_path = 'GoogleMaps.framework/Versions/A'
+  framework_path = 'GoogleMaps.framework'
 
-  s.source_files = "#{framework_path}/Headers/*.h"
-  s.resource = "#{framework_path}/Resources/GoogleMaps.bundle"
+  s.source_files = "#{framework_path}/Versions/A/Headers/*.h"
+  s.resource = "#{framework_path}/Versions/A/Resources/GoogleMaps.bundle"
 
   s.preserve_paths = framework_path
   s.header_dir = 'GoogleMaps'
 
   s.frameworks = 'GoogleMaps', 'AVFoundation', 'CoreData', 'CoreLocation', 'CoreText', 'GLKit', 'ImageIO', 'OpenGLES', 'QuartzCore', 'SystemConfiguration'
-  s.libraries = 'icucore', 'stdc++', 'z'
+  s.libraries = 'icucore', 'c++', 'z'
 
   s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/Google-Maps-iOS-SDK"' }
 end
